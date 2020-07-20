@@ -3,6 +3,8 @@
 """These are just scripts for using Homebrew on my Mac so I don't 
 have to remember all the commands. 
 
+Uses a separate .py file containing a list of casks for an automated install.
+
 This is the "OOP" version of this script. 
 """
 
@@ -15,20 +17,26 @@ from cask_list import casks
 
 class Brew:
 
+    # Initialize class variable for the list of objects
     brews_list = []
 
+    # Initialize attributes for objects
     def __init__(self, opt, disp, cmd):
         self.option = opt
         self.display = disp
         self.command = cmd
 
+    # Set up output format for string printing
     def __str__(self):
         return f"\t[{self.option:>2}] - {self.display}"
 
     def run_command(self):
+        """Gets passed objects and runs attached commands attributes in the terminal."""
 
+        # Initialize variable for use when there's no string formatting (ignored)
         c_name = None
 
+        # Run specifics based on 'option' attribute where needed and wait for user input
         if self.option == '8':
             c_name = input("Which package would you like to install?: ")
         if self.option == '10':
@@ -45,7 +53,9 @@ class Brew:
 
     @classmethod
     def generate_list(cls):
+        """Use list of attributes to generate list of objects."""
 
+        # Attributes for each object, (option, display, command)
         info = (
             ('1', 'Install xCode Tools', 'xcode-select --install'),
             ('2', 'Install Homebrew',
@@ -66,19 +76,24 @@ class Brew:
             ('15', 'Exit', 'exit')
         )
 
+        # Generate objects and add them to the list
         for group in info:
             Brew.brews_list.append(Brew(group[0], group[1], group[2]))
 
     @staticmethod
     def brew_main():
-        Brew.generate_list()
-        while True:
+        """Main-Generate list and call menu and methods on a loop."""
 
+        Brew.generate_list()
+
+        # Display menu options and get user selection
+        while True:
             disp_art()
             for item in Brew.brews_list:
                 print(item)
             sel = input("\n\tSelection: ")
 
+            # Call methods based on returned user input
             for item in Brew.brews_list:
                 if item.option == sel:
                     if item.command == 'exit':
