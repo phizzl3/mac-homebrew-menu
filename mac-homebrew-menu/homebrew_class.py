@@ -33,10 +33,14 @@ class Brew:
             c_name = input("Which package would you like to install?: ")
         if self.option == '10':
             c_name = input("Which package would you like to remove?: ")
-        if self.option == '12':
+        if self.option in ('12', '14'):
             c_name = ' '.join(casks)
-
-        subprocess.run(self.command.format(c_name), shell=True)
+        if self.option == '14':
+            for item in Brew.brews_list:
+                if item.option in ('1','2','3','4','5','6','12','13'):
+                    subprocess.run(item.command.format(c_name), shell=True)
+        else:
+            subprocess.run(self.command.format(c_name), shell=True)
         input("ENTER to continue...")
 
     @classmethod
@@ -45,11 +49,11 @@ class Brew:
         info = (
             ('1', 'Install xCode Tools', 'xcode-select --install'),
             ('2', 'Install Homebrew',
-             'ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"'),
+            '/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"'),
             ('3', 'Install Cask Package Manager', 'brew install cask'),
             ('4', 'Install Rsync', 'brew install rsync'),
             ('5', 'Install htop', 'brew install htop'),
-            ('6', 'Install youtube-dl', 'brew install ffmpeg'),
+            ('6', 'Install youtube-dl', 'brew install youtube-dl ffmpeg'),
             ('7', 'List Available Cask Packages', 'brew search --casks'),
             ('8', 'Install from Available Casks', 'brew cask install {}'),
             ('9', 'List Installed Cask Packages', 'brew cask list'),
@@ -58,12 +62,12 @@ class Brew:
             ('12', 'Install Cask List', 'brew cask install {}'),
             ('13', 'Purge Package Cache (su)',
              'sudo rm -r ~/Library/Caches/Homebrew/downloads/'),
-            # ('14', 'Full Install', 'pass'),  # TODO
+            ('14', 'Full Install', '_full'),
             ('15', 'Exit', 'exit')
         )
 
-        for each in info:
-            Brew.brews_list.append(Brew(each[0], each[1], each[2]))
+        for group in info:
+            Brew.brews_list.append(Brew(group[0], group[1], group[2]))
 
     @staticmethod
     def brew_main():
@@ -71,8 +75,8 @@ class Brew:
         while True:
 
             disp_art()
-            for each in Brew.brews_list:
-                print(each)
+            for item in Brew.brews_list:
+                print(item)
             sel = input("\n\tSelection: ")
 
             for item in Brew.brews_list:
