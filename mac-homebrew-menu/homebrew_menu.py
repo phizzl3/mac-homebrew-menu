@@ -37,7 +37,7 @@ class Brew:
             c_name = ' '.join(casks)
         if self.option == '14':
             for item in Brew.brews_list:
-                if item.option in ('1','2','3','4','5','6','12','13'):
+                if item.option in ('1', '2', '3', '4', '5', '6', '12', '13'):
                     subprocess.run(item.command.format(c_name), shell=True)
         else:
             subprocess.run(self.command.format(c_name), shell=True)
@@ -49,7 +49,7 @@ class Brew:
         info = (
             ('1', 'Install xCode Tools', 'xcode-select --install'),
             ('2', 'Install Homebrew',
-            '/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"'),
+             '/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"'),
             ('3', 'Install Cask Package Manager', 'brew install cask'),
             ('4', 'Install Rsync', 'brew install rsync'),
             ('5', 'Install htop', 'brew install htop'),
