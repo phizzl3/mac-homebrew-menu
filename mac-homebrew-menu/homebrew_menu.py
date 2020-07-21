@@ -41,28 +41,29 @@ class Brew:
         # then wait for user input
         if self.option in ('4', '12'):
             c_name = ' '.join(installs)
-
+        # Cask installer
         if self.option == '6':
             c_name = input("Which package would you like to install?: ")
-
+        # Cask uninstaller
         if self.option == '8':
             c_name = input("Which package would you like to remove?: ")
-
+        # Full install
         if self.option == '12':
             for item in Brew.brews_list:
                 if item.option in ('1', '2', '3', '4'):
                     subprocess.run(item.command.format(c_name), shell=True)
-
+        # Cask list installer & Full install
         if self.option in ('10', '12'):
             c_name = ' '.join(casks)
-
+        # Homebrew apps installer & Full install
         if self.option == '12':
             for item in Brew.brews_list:
                 if item.option in ('10', '11'):
                     subprocess.run(item.command.format(c_name), shell=True)
-
+        # Run for all but Full install
         else:
             subprocess.run(self.command.format(c_name), shell=True)
+            
         input("ENTER to continue...")
 
     @classmethod
