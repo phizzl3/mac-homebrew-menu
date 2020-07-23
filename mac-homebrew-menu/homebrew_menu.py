@@ -12,7 +12,7 @@ This is the "OOP" version of this script.
 import subprocess
 
 from art import disp_art
-from hb_data import attrs, casks, installs
+from data import attrs, casks, installs
 
 
 class Brew:
