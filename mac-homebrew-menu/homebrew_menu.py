@@ -3,7 +3,7 @@
 """These are just scripts for using Homebrew on my Mac so I don't 
 have to remember all the commands. 
 
-Uses a separate "hb_data.py" file containing lists of attributes and installs.
+Uses a separate "data.py" file containing lists of attributes and installs.
 
 This is the "OOP" version of this script. 
 """
