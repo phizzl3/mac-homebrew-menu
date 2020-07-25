@@ -12,22 +12,21 @@ This is the "OOP" version of this script.
 import subprocess
 
 from art import disp_art
-from data import attrs, casks, installs
+from data import ATTRS, CASKS, INSTALLS
 
 
 class Brew:
 
-    # Initialize class variable for the list of objects
-    brews_list = []
-
-    # Initialize attributes for objects
     def __init__(self, opt, disp, cmd):
+        """Initialize attributes for objects."""
+
         self.option = opt
         self.display = disp
         self.command = cmd
 
-    # Set up output format for string printing
     def __str__(self):
+        """Set up output format for string printing."""
+
         return f"\t[{self.option:>2}] - {self.display}"
 
     def run_command(self):
@@ -35,67 +34,82 @@ class Brew:
         attributes in the terminal."""
 
         # Initialize variable for use when there's no string formatting
-        c_name = None
+        install = None
 
-        # Run specifics based on 'option' attribute where needed,
-        # then wait for user input
+        # Homebrew apps installer
         if self.option in ('4', '12'):
-            c_name = ' '.join(installs)
-        # Cask installer
+            install = ' '.join(INSTALLS)
+
+       # Cask installer
         if self.option == '6':
-            c_name = input("Which package would you like to install?: ")
+            install = input("Which package would you like to install?: ")
+
         # Cask uninstaller
         if self.option == '8':
-            c_name = input("Which package would you like to remove?: ")
-        # Full install
-        if self.option == '12':
-            for item in Brew.brews_list:
-                if item.option in ('1', '2', '3', '4'):
-                    subprocess.run(item.command.format(c_name), shell=True)
+            install = input("Which package would you like to remove?: ")
+
         # Cask list installer & Full install
         if self.option in ('10', '12'):
-            c_name = ' '.join(casks)
-        # Homebrew apps installer & Full install
-        if self.option == '12':
-            for item in Brew.brews_list:
-                if item.option in ('10', '11'):
-                    subprocess.run(item.command.format(c_name), shell=True)
-        # Run for all but Full install
+            install = ' '.join(CASKS)
+
+        # Run command
+        subprocess.run(self.command.format(install), shell=True)
+
+
+class BrewList(list):
+
+    def disp_menu(self):
+        """Display 'Menu' of objects, return selection."""
+
+        for item in self:
+            print(item)
+        return input("\n\tSelection: ")
+
+    def call_method(self, sel):
+        """Call method based on returned user input."""
+
+        for item in self:
+            if item.option == sel:
+                if item.command == 'exit':
+                    return False
+
+                # Full install command
+                if item.command == 'full':
+                    for each in self:
+                        if each.option in ('1', '2', '3', '4', '10', '11'):
+                            each.run_command()
+                    return True
+
+                # Run command for all but 'exit' and 'full'
+                item.run_command()
+                break
+
+        # Run if selection isn't found
         else:
-            subprocess.run(self.command.format(c_name), shell=True)
-            
-        input("ENTER to continue...")
+            print("\nTry again...")
 
-    @classmethod
-    def generate_list(cls):
-        """Use list of attributes to generate list of objects."""
+        input("\nENTER to continue...")
+        return True
 
-        # Generate objects and add them to the list
-        for group in attrs:
-            Brew.brews_list.append(Brew(group[0], group[1], group[2]))
+    def compile_list(self):
+        """Generate objects and add them to the list."""
 
-    @staticmethod
-    def brew_main():
-        """Main-Generate list and call menu and methods on a loop."""
+        for group in ATTRS:
+            self.append(Brew(group[0], group[1], group[2]))
 
-        Brew.generate_list()
 
-        # Display menu options and get user selection
-        while True:
-            
-            disp_art()
-            for item in Brew.brews_list:
-                print(item)
-            sel = input("\n\tSelection: ")
+def main():
+    """Generate list and objects and call methods."""
 
-            # Call method based on returned user input
-            for item in Brew.brews_list:
-                if item.option == sel:
-                    if item.command == 'exit':
-                        return
-                    item.run_command()
-                    break
+    go = True
+    brews = BrewList()
+    brews.compile_list()
+
+    while go:
+        disp_art()
+        sel = brews.disp_menu()
+        go = brews.call_method(sel)
 
 
 if __name__ == "__main__":
-    Brew.brew_main()
+    main()
