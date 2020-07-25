@@ -6,7 +6,7 @@ Add/Remove/Comment out as needed.
 
 # List of attributes for use in instantiating Brew objects
 # (option, display, command)
-attrs = (
+ATTRS = (
     ('1', 'Install xCode Tools', 'xcode-select --install'),
     ('2', 'Install Homebrew',
      '/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"'),
@@ -20,13 +20,13 @@ attrs = (
     ('10', 'Install Cask List', 'brew cask install {}'),
     ('11', 'Purge Package Cache (su)',
      'sudo rm -r ~/Library/Caches/Homebrew/downloads/'),
-    ('12', 'Full Install', '_full'),
+    ('12', 'Full Install', 'full'),
     ('13', 'Exit', 'exit')
 )
 
 
 # List of cask packages to install
-casks = (
+CASKS = (
     'appcleaner',
     'applepi-baker',
     'boom',
@@ -59,7 +59,7 @@ casks = (
 
 
 # List of homebrew apps to install
-installs = (
+INSTALLS = (
     'rsync',
     'htop',
     'youtube-dl',
