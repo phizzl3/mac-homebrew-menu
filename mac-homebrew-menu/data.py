@@ -16,7 +16,7 @@ ATTRS = (
     ('6', 'Install from Available Casks', 'brew cask install {}'),
     ('7', 'List Installed Cask Packages', 'brew cask list'),
     ('8', 'Uninstall Cask Package', 'brew cask uninstall {}'),
-    ('9', 'Upgrade Installed Cask Packages', 'brew cask upgrade'),
+    ('9', 'Upgrade Installed Cask Packages', 'brew upgrade --cask'),
     ('10', 'Install Cask List', 'brew cask install {}'),
     ('11', 'Purge Package Cache (su)',
      'sudo rm -r ~/Library/Caches/Homebrew/downloads/'),
